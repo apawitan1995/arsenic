@@ -116,6 +116,11 @@ class Element(RequestHelpers):
             data={"using": selector_type.value, "value": selector},
         )
         return [self.session.create_element(element_id) for element_id in element_ids]
+    
+    async def switch_to_frame(self, id):
+        return await self._request(
+            url="/frame", method="POST", data={"id":id}
+        )
 
     async def get_rect(self):
         data = await self._request(url="/rect", method="GET")
@@ -316,6 +321,11 @@ class Session(RequestHelpers):
     async def switch_to_window(self, handle):
         return await self._request(
             url="/window", method="POST", data={"handle": handle, "name": handle}
+        )
+
+    async def switch_to_frame(self, id):
+        return await self._request(
+            url="/frame", method="POST", data={"id":id}
         )
 
     async def new_window(self, window_type: WindowType = WindowType.tab):
